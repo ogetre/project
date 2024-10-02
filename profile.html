@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="profile"></div>
+    <script>
+      localStorage.setItem('username', 'desmol');
+    let name = localStorage.getItem("username");
+
+    if (localStorage.getItem("username")) {
+        try {
+            const fetchData = async () => {
+                const response = await fetch('http://localhost:3000/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                const data = await response.json();
+                let approvement = data.BrawlAproved
+                if (approvement === "0"){
+                    document.getElementById("profile").innerHTML =`У вас нету аккаунта на сдачу`
+                }
+                else if(approvement === "1"){
+                    document.getElementById("profile").innerHTML =`ваш аккаун ${data.Brawlid} с ожидает одобрения менеджером`
+                }
+                else{
+                     document.getElementById("profile").innerHTML =`ваш аккаун ${data.Brawlid} с успешно здан и вы получаете ${data.Brawl}`
+                }
+                
+                if (response.ok) {
+                    console.log('Ответ сервера:', data);
+                } else {
+                    alert('Регистрация не удалась: ' + data.message);
+                }
+            };
+
+            fetchData();
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }}
+    </script>
+</body>
+</html>

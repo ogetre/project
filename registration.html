@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.form-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+.form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+}
+.form-container input[type="text"], 
+.form-container input[type="email"], 
+.form-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+#submit {
+    background-color: #5cb85c;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+#submit:hover {
+    background-color: #4cae4c;
+}
+.form-container p {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+.form-container p a {
+    color: #5cb85c;
+    text-decoration: none;
+}
+.form-container p a:hover {
+    text-decoration: underline;
+}
+.password-container {
+    position: relative;
+}
+.password-container input[type="password"] {
+    padding-right: 40px;
+}
+.password-container .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+</style>
+    <div class="form-container">
+        <h2>Создать аккаунт</h2>
+        <form id="registerForm">
+            <label for="email">Почта</label>
+            <input type="email" id="email" name="email" required>
+
+            <div class="password-container">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password"  minlength="5" required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+            <input type="submit" id="submit" value="Продолжить">
+        </form>
+        <p>Уже есть аккаунт?<a href="http://localhost:3000/login"> Войти</a></p>
+    </div>
+
+    <script>
+        if(localStorage.getItem("nickname")){
+        window.location.href = 'http://localhost:3000/main'
+        }
+                    console.log(localStorage.getItem("nickname"))
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    const userId = segments[segments.length - 1]; // Получаем id из пути
+        // localStorage.clear()
+    console.log(userId);
+    // Добавляем обработчик на форму
+    // if(localStorage.getItem("username")){
+    //     window.location.href = 'http://localhost:3000/start';
+    // }
+    document.getElementById('registerForm').addEventListener('submit', register);
+
+    async function register(event) {
+        event.preventDefault(); // Предотвращаем перезагрузку страницы
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('http://localhost:3000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username:email, password:password, userId:userId })
+            });
+            const data = await response.json()
+            console.log(data)
+            console.log("gdfgdfg",data.username)
+            console.log(localStorage.getItem("nickname"))
+            if (response.ok) { // Если регистрация успешна
+                console.log("ffffff")
+                localStorage.setItem("nickname", data.username)
+                console.log(localStorage.getItem("nickname"))
+                window.location.href = '/main'; // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const togglePasswordIcon = document.querySelector('.toggle-password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePasswordIcon.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            togglePasswordIcon.textContent = '👁️';
+        }
+    }
+    </script>
+</body>
+</html>

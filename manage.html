@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div><h1>проверить валидность почт</h1>
+    <ol id ="firstlist">
+
+    </ol></div>
+    <div>
+        <h1>код для переноса почт</h1>
+        <ol id = "secondlist">
+    </ol>
+    </div>
+    <script >
+        	if(!localStorage.getItem("nickname") == "manage@mail"){
+		window.location.href = '/login'
+	}
+    else if (localStorage.getItem("nickname") == "manage@mail"){
+
+        async function getdata() {
+        const nick = localStorage.getItem("nickname")
+
+        try {
+            const response = await fetch('/manage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username:nick,  })
+            });
+            const data = await response.json()
+            console.log(data)
+            for(let i =0; i < data.results.length; i++){
+                console.log("nfgsdkgsfkd")
+            document.getElementById("firstlist").innerHTML += `<li>почта ${data.results[i].Brawlmail} пароль ${data.results[i].Brawlpass}<button id ="${data.results[i].Brawlid}">+</button><button id ="refuse${data.results[i].Brawlid}">-</button></li>`
+        document.getElementById(data.results[i].Brawlid).addEventListener('click', function() {
+            confirmfirst(data.results[i].Brawlid) })
+        document.getElementById(`refuse${data.results[i].Brawlid}`).addEventListener('click', function() {
+                refusefirst(data.results[i].Brawlid) 
+        
+        })}
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function getdatasecond() {
+        const nick = localStorage.getItem("nickname")
+
+        try {
+            const response = await fetch('/managesecond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username:nick,  })
+            });
+            const data = await response.json()
+            console.log(data)
+            for(let i =0; i < data.results.length; i++){
+                document.getElementById("secondlist").innerHTML += `<li> почта ${data.results[i].Brawlmail} код с почт ${data.results[i].mailcode}<input type="text" id ="newmail${i}"><input type="text" id ="newpass${i}"><button id ="s${data.results[i].Brawlid}">+</button><button id ="srefuse${data.results[i].Brawlid}">-</button><</li>`
+                document.getElementById("s"+data.results[i].Brawlid).addEventListener('click', function() {
+                    confirmsecond(data.results[i].Brawlid, document.getElementById(`newmail${i}`).value, document.getElementById(`newpass${i}`).value) })
+                document.getElementById("srefuse"+data.results[i].Brawlid).addEventListener('click', function() {
+                        refusesecond(data.results[i].Brawlid) })
+        }
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    getdata()
+    getdatasecond()
+    async function confirmsecond(id, mail, pass) {
+        console.log(mail)
+        console.log(pass)
+
+        try {
+            const response = await fetch('/approvesecond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({approve: id, newmail:mail, newpass:pass })
+            });
+            const data = await response.json()
+            console.log(data)
+        
+        
+        
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function confirmfirst(id) {
+        
+
+        try {
+            const response = await fetch('/approvefirst', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({approve: id })
+            });
+            const data = await response.json()
+            console.log(data)
+        
+        
+        
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function refusefirst(id) {
+        
+
+        try {
+            const response = await fetch('/refusefirst', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({approve: id })
+            });
+            const data = await response.json()
+            console.log(data)
+        
+        
+        
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function refusesecond(id) {
+        
+
+        try {
+            const response = await fetch('/refusesecond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({approve: id })
+            });
+            const data = await response.json()
+            console.log(data)
+        
+        
+        
+            if (response.ok) { // Если регистрация успешна
+                // Перенаправляем на /start
+            } else {
+                alert('Регистрация не удалась: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }}
+    else{
+        window.location.href = '/login'
+    }
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .form-container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 400px;
+    }
+    .form-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+    }
+    .form-container input[type="text"], 
+    .form-container input[type="email"], 
+    .form-container input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    #submit {
+        background-color: #5cb85c;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+    }
+    #submit:hover {
+        background-color: #4cae4c;
+    }
+    .form-container p {
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+    }
+    .form-container p a {
+        color: #5cb85c;
+        text-decoration: none;
+    }
+    .form-container p a:hover {
+        text-decoration: underline;
+    }
+    .password-container {
+        position: relative;
+    }
+    .password-container input[type="password"] {
+        padding-right: 40px;
+    }
+    .password-container .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #666;
+    }
+</style>
+<body>
+    <div class="form-container">
+        <h2>Войти</h2>
+        <form id = "login-form">
+            <label for="email">Почта</label>
+            <input type="email" id="nickname" name="email" required>
+
+            <div class="password-container">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" minlength="5" required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <input type="submit" id = "submit"value="Login">
+        </form>
+        <p>Нету аккаунта?<a href="http://localhost:3000/registration/32"> Создайте</a></p>
+    </div>
+    </div>
+    <script>
+
+if(localStorage.getItem("nickname")){
+        window.location.href = 'http://localhost:3000/main'
+        }
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const togglePasswordIcon = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePasswordIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                togglePasswordIcon.textContent = '👁️';
+            }
+        }
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Предотвращаем обычную отправку формы
+
+            // Собираем данные формы
+            const formData = new FormData(this);
+            const nickname = document.getElementById("nickname").value
+            const password = document.getElementById("password").value
+            // Отправляем данные с помощью Fetch API
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username:nickname, password:password})
+                });
+
+                // Обрабатываем ответ от сервера
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data)
+                    console.log('Сообщение:', data.message);
+
+                    localStorage.setItem('nickname', nickname);
+                    window.location.href = '/main';
+
+                    
+                    // Здесь можно сделать перенаправление или показать сообщение об успехе
+                } else {
+                    console.error('Ошибка при входе:', response.status);
+                    // Здесь можно обработать ошибку
+                }
+            } catch (error) {
+                console.error('Ошибка сети:', error);
+            }
+        });
+    </script>
+</body>
+</html>

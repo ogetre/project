@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #495057;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .profile-header {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+    .profile-header img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border: 5px solid #ffffff;
+    }
+    .profile-header h1 {
+      margin-top: 20px;
+      font-size: 2rem;
+    }
+    .notification-badge {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: #dc3545;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .profile-info {
+      margin: -60px auto 20px auto;
+      max-width: 700px;
+      padding: 30px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .profile-info h4 {
+      color: #007bff;
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+    .profile-info p {
+      font-size: 1rem;
+      margin: 0;
+    }
+    .rating {
+      font-size: 1.5rem;
+      color: #ffc107;
+    }
+    .rating span {
+      margin-right: 3px;
+    }
+    .logout-btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .logout-btn a {
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: white;
+      background-color: #dc3545;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .logout-btn a:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-header">
+    <img src="https://via.placeholder.com/120" alt="Profile Picture">
+    <h1>John Doe</h1>
+    <div class="notification-badge">3</div>
+  </div>
+
+  <div class="container profile-info">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <h4>Email</h4>
+        <p>johndoe@example.com</p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <h4>ID</h4>
+        <p>1234567890</p>
+      </div>
+      <div class="col-md-12 mb-3">
+        <h4>Rating</h4>
+        <div class="rating">
+          <span>&#9733;</span>
+          <span>&#9733;</span>
+          <span>&#9733;</span>
+          <span>&#9733;</span>
+          <span>&#9734;</span>
+        </div>
+      </div>
+    </div>
+    <div class="logout-btn">
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
